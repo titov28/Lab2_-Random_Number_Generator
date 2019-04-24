@@ -85,7 +85,7 @@ namespace RandomNumberGenerator
 
         public void Print()
         {
-            Console.Write("RandomNumberFile\n\n");
+            Console.Write("Random Number File\n\n");
 
             for (int i = 0; i < randomNumberArray.GetUpperBound(0) + 1; i++)
             {
