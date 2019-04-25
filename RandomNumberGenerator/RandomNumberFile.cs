@@ -11,42 +11,45 @@ namespace RandomNumberGenerator
     {
         private string pathFile = @"Random.txt";
         private int[,] fileArray;
-        private int[,] randomNumberArray;
+        public int[] randomNumberArray;
+        private int mod;
 
-        public RandomNumberFile(int[,] randArr)
+        public RandomNumberFile()
         {
-            randomNumberArray = randArr;
+            randomNumberArray = null;
 
             ReadFile();
+        }
+
+        public void SetArr(int size, int mod)
+        {
+            randomNumberArray = new int[size];
+            this.mod = mod;
             Init();
         }
 
-
         private void Init()
         {
-            int mod = 10;
             Random rand = new Random();
 
             int indexI = 0;
             int indexJ = 0;
 
-            for (int i = 0; i < randomNumberArray.GetUpperBound(1) + 1; i++)
+
+            for (int j = 0; j < randomNumberArray.Length; j++)
             {
-                for (int j = 0; j < randomNumberArray.GetUpperBound(0) + 1; j++)
+                indexI = rand.Next(fileArray.GetUpperBound(0) + 1);
+                indexJ = rand.Next(fileArray.GetUpperBound(1) + 1);
+
+                if (fileArray[indexI, indexJ] < 1000 || fileArray[indexI, indexJ] % mod < mod / 10)
                 {
-                    indexI = rand.Next(fileArray.GetUpperBound(0) + 1);
-                    indexJ = rand.Next(fileArray.GetUpperBound(1) + 1);
-
-                    if(fileArray[indexI, indexJ] < 1000 || fileArray[indexI, indexJ] % mod < mod / 10)
-                    {
-                        j--;
-                        continue;
-                    }
-
-                    randomNumberArray[j, i] = fileArray[indexI, indexJ] % mod;
+                    j--;
+                    continue;
                 }
-                mod *= 10;
+
+                randomNumberArray[j] = fileArray[indexI, indexJ] % mod;
             }
+
         }
 
 
@@ -87,15 +90,12 @@ namespace RandomNumberGenerator
         {
             Console.Write("Random Number File\n\n");
 
-            for (int i = 0; i < randomNumberArray.GetUpperBound(0) + 1; i++)
+            for (int j = 0; j < randomNumberArray.Length; j++)
             {
-                for (int j = 0; j < randomNumberArray.GetUpperBound(1) + 1; j++)
-                {
-                    Console.Write("{0, 5}", randomNumberArray[i, j]);
-                }
-                Console.Write("\n");
+                Console.WriteLine("{0, 5}", randomNumberArray[j]);
             }
             Console.Write("\n");
+            
         }
     }
 }

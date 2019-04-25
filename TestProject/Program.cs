@@ -11,14 +11,19 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            int[,] randArr = new int[10,3];
-            int[,] randArrF = new int[10, 3];
-
-            CongruentMethod cong = new CongruentMethod(randArr);
+            
+            CongruentMethod cong = new CongruentMethod();
+            cong.SetArr(10, 1000);
             cong.Print();
 
-            RandomNumberFile randF = new RandomNumberFile(randArrF);
+            RandomNumberFile randF = new RandomNumberFile();
+            randF.SetArr(10, 1000);
             randF.Print();
+
+            XiSquare myXI = new XiSquare();
+
+            myXI.Set(cong.randomNumberArray, 1000);
+            myXI.Print();
 
             Console.ReadLine();
         }
