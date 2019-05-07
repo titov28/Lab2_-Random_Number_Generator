@@ -25,12 +25,19 @@ namespace RandomNumberGenerator
         {
             double locP = 1.0 / k;
 
+            int sum = 0;
+
             for(int i = 0; i < randomNumberArray.Length; i++)
             {
-                Xi += Math.Pow(randomNumberArray[i] - randomNumberArray.Length * locP, 2) / randomNumberArray.Length * locP;
+                sum += randomNumberArray[i]; 
             }
 
-            if(Xi > 0 && Xi <= 2.09)
+            for(int i = 0; i < randomNumberArray.Length; i++)
+            {
+                Xi += Math.Pow(randomNumberArray[i] - sum * locP, 2) / (sum * locP);
+            }
+
+            if(Xi <= 2.09)
             {
                 p = 0.01;
             }
