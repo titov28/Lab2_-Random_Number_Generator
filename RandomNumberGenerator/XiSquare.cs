@@ -8,17 +8,51 @@ namespace RandomNumberGenerator
 {
     public class XiSquare
     {
-        public double Xi {get;set;}
-        public double p;
-        private int k; 
-        private int[] randomNumberArray;
+        public double Xi {get;set;} // Xi квадрат
+        public double p; // вероятность
+        private int k = 10; // количество интервалов
+        private int[] randomNumberArray; // выборка случайных величин
+        private double[] mj; // число попапданий случайной величины в интервал
+        private double[] intervals;
 
-        public void Set(int[] arr, int k)
+        public void Set(int[] arr)
         {
             randomNumberArray = arr;
             Xi = 0.0;
-            this.k = k;
+
+            InitInterval();
             Init();
+        }
+
+        private void InitInterval()
+        {
+            int min = int.MaxValue;
+            int max = -1;
+            InitMinMax(min, max);
+
+            double step = (double)(max - min) / k;
+
+
+
+
+        }
+
+        private void InitMinMax(int min, int max)
+        {
+            for(int i = 0; i < randomNumberArray.Length; i++)
+            {
+                if(randomNumberArray[i] > max)
+                {
+                    max = randomNumberArray[i];
+                }
+
+                if (randomNumberArray[i] < min)
+                {
+                    min = randomNumberArray[i];
+                }
+
+            }
+
         }
 
         private void Init()
@@ -27,11 +61,7 @@ namespace RandomNumberGenerator
 
             int sum = 0;
 
-            for(int i = 0; i < randomNumberArray.Length; i++)
-            {
-                sum += randomNumberArray[i]; 
-            }
-
+            
             for(int i = 0; i < randomNumberArray.Length; i++)
             {
                 Xi += Math.Pow(randomNumberArray[i] - sum * locP, 2) / (sum * locP);
