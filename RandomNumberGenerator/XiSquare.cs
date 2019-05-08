@@ -10,7 +10,7 @@ namespace RandomNumberGenerator
     {
         public double Xi {get;set;} // Xi квадрат
         public double p; // вероятность
-        private int k = 10; // количество интервалов
+        private int k ; // количество интервалов
         private int[] randomNumberArray; // выборка случайных величин
         private double[] mj; // число попапданий случайной величины в интервал
         private double[] intervals;
@@ -21,23 +21,88 @@ namespace RandomNumberGenerator
             Xi = 0.0;
 
             InitInterval();
+            InitMJ();
             Init();
+        }
+
+        private void InitMJ()
+        {
+            mj = new double[k];
+
+            for(int i = 0; i < randomNumberArray.Length; i++)
+            {
+                for(int j = 0; j < k; j++)
+                {
+                    if (randomNumberArray[i] <= intervals[j + 1]) {
+                        mj[j] += 1.0;
+                        break;
+                    }
+                }
+            }
+
         }
 
         private void InitInterval()
         {
             int min = int.MaxValue;
             int max = -1;
-            InitMinMax(min, max);
+            k = NumberOfUniqueNumbers();
 
-            double step = (double)(max - min) / k;
+            if (k > 3)
+            {
+                k = 10;
+            }
 
+            InitMinMax(ref min, ref max);
 
+            double step = Math.Round((double)(max - min) / k, 2);
 
+            
+            intervals = new double[k + 1];
+
+            double temp = min;
+
+            for(int i = 0; i < k + 1; i++)
+            {
+                intervals[i] = temp;
+                temp = Math.Round(temp + step, 2);
+            }
 
         }
 
-        private void InitMinMax(int min, int max)
+        private int NumberOfUniqueNumbers()
+        {
+            int count = 0;
+            int[] locArr = randomNumberArray.Clone() as int[];
+
+            int size = randomNumberArray.Length;
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    if(i != j)
+                    {
+                        if(locArr[i] == locArr[j])
+                        {
+                            locArr[j] = -1;
+                        }
+                    }
+                }
+
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                if (locArr[i] != -1)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private void InitMinMax(ref int min,ref int max)
         {
             for(int i = 0; i < randomNumberArray.Length; i++)
             {
@@ -58,16 +123,17 @@ namespace RandomNumberGenerator
         private void Init()
         {
             double locP = 1.0 / k;
+            int N = randomNumberArray.Length;
 
-            int sum = 0;
 
-            
-            for(int i = 0; i < randomNumberArray.Length; i++)
+            for (int i = 0; i < k; i++)
             {
-                Xi += Math.Pow(randomNumberArray[i] - sum * locP, 2) / (sum * locP);
+                if(mj[i] != 0)
+                    Xi += Math.Pow(mj[i] - N * locP, 2) / (N * locP);
             }
 
-            if(Xi <= 2.09)
+
+            if (Xi <= 2.09)
             {
                 p = 0.01;
             }
@@ -99,13 +165,17 @@ namespace RandomNumberGenerator
             {
                 p = 0.5;
             }
-            else if (Xi > 8.34 && Xi <= 9.41)
+            else if (Xi > 8.34 && Xi <= 11.39)
             {
-                p = 0.6;
+                p = 0.75;
+            }
+            else if (Xi > 11.39 && Xi <= 16.92)
+            {
+                p = 0.95;
             }
             else 
             {
-                p = 0.7;
+                p = 0.99;
             }
         }
 

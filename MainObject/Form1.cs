@@ -50,13 +50,13 @@ namespace MainObject
                     dataGridView1[i, j].Value = congruentMethod.randomNumberArray[j];
                     dataGridView2[i, j].Value = randomNumberFile.randomNumberArray[j];
                 }
-                xiSquare.Set(congruentMethod.randomNumberArray, k);
+                xiSquare.Set(congruentMethod.randomNumberArray);
 
                 sb = "Xi = " + Math.Round(xiSquare.Xi, 3);
                 sb += " P = " + xiSquare.p + "\t\t";
                 textBox1.Text += sb;
 
-                xiSquare.Set(randomNumberFile.randomNumberArray, k);
+                xiSquare.Set(randomNumberFile.randomNumberArray);
 
                 sb = "Xi = " + Math.Round(xiSquare.Xi, 3);
                 sb += " P = " + xiSquare.p + "\t\t";
@@ -92,7 +92,7 @@ namespace MainObject
 
                 if (flag)
                 {
-                    xiSquare.Set(arr, 10);
+                    xiSquare.Set(arr);
 
                     sb = "Xi = " + Math.Round(xiSquare.Xi, 3);
                     sb += " P = " + xiSquare.p + "\t\t";
